@@ -1,6 +1,6 @@
 // Filename: app.js
 define([
-    'libs/jquery/jquery',
+    'jquery',
     'underscore',
     'backbone',
     'router' // Request router.js
