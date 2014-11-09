@@ -1,0 +1,43 @@
+{
+    "status": "success",
+    "data": {
+        "tacts": [
+            {
+                "temp": 80,
+                "beat": "4/4",
+                "sounds": [
+                   
+                    {"sound": "G4", "duration": "1/2"},
+                    {"sound": "E4", "duration": "1/4"},
+                    {"sound": "E4", "duration": "1/4"} 
+                ]
+            },
+            {
+                "temp": 80,
+                "beat": "4/4",
+                "sounds": [
+                    {"sound": "G4", "duration": "1/2"},
+                    {"sound": "E4", "duration": "1/4"},
+                    {"sound": "E4", "duration": "1/4"} 
+                ]
+            },
+            {
+                "temp": 80,
+                "beat": "4/4",
+                "sounds": [
+                    {"sound": "G4", "duration": "1/4"},
+                    {"sound": "F4", "duration": "1/4"},
+                    {"sound": "E4", "duration": "1/4"},
+                    {"sound": "D4", "duration": "1/4"} 
+                ]
+            },
+            {
+                "temp": 80,
+                "beat": "4/4",
+                "sounds": [
+                    {"sound": "C4", "duration": "4/4"}
+                ]
+            }
+        ]
+    }
+}
