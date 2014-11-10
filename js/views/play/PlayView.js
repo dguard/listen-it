@@ -3,20 +3,18 @@ define([
     'underscore',
     'backbone',
     'text!templates/play/playTemplate.html',
-    'collections/tact/TactsCollection',
-    'views/play/KeyboardView'
-], function($, _, Backbone, playTemplate, TactsCollection, KeyboardView){
+    'views/play/KeyboardView',
+    'views/play/SoundPlayerView'
+], function($, _, Backbone, playTemplate, KeyboardView, SoundPlayerView){
 
     var PlayView = Backbone.View.extend({
         el: $("#page"),
 
         render: function(){
-            var tactsCollection = new TactsCollection;
-            tactsCollection.fetch();
-
             this.$el.html(playTemplate);
 
             var keyboardView = new KeyboardView();
+            var soundPlayerView = new SoundPlayerView();
         }
     });
 

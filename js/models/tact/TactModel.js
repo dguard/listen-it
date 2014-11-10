@@ -9,10 +9,20 @@ define([
         initialize: function( options ) {
             this.temp = options.temp;
             this.beat = options.beat;
-            this.sounds = options.sounds.map(function(){
-                return new SoundModel(this);
+            this.status = TactModel.STATUS_UNKNOWN;
+            this.sounds = options.sounds.map(function(value, index){
+                return new SoundModel(value);
             });
+        },
+
+        getStatus: function(){
+            return this.get('status');
         }
+    }, {
+        STATUS_SUCCESS: 'success',
+        STATUS_ERROR: 'error',
+        STATUS_CURRENT: 'current',
+        STATUS_UNKNOWN: ''
     });
 
     return TactModel;

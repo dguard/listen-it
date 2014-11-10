@@ -1,0 +1,13 @@
+<div class="sound-player">
+    <ul class="tacts-list">
+        <% _.each(tacts, function(tact, index){ %>
+            <li class="<%= tact.getStatus() %>"></li>
+        <% }); %>
+    </ul>
+
+    <button class="repeat-btn">Repeat</button>
+    <button class="skip-btn">Skip</button>
+    <button class="play-btn">Play melody</button>
+</div>
+
+

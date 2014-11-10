@@ -1,7 +1,7 @@
 <div class="keyboard">
     <div class="backboard"></div>
     <div class="keys">
-        <% debugger; _.each(keys, function(key){ %>
+        <% _.each(keys, function(key){ %>
             <div data-note="<%= key.get('note') %>"
                  class="piano-key <%= key.isWhite() ? 'white' : 'black' %>"
                  title="<%= key.get('note') %>"
