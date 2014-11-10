@@ -12,7 +12,7 @@ define([
 
         getSpeed: function(){
             var parts = this.duration.split('/');
-            return parts[0] / parts[1] * 7 * 10 * 2;
+            return parts[0] / parts[1] * 7 * 100 * 2;
         }
     });
 

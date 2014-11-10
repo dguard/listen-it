@@ -36,10 +36,10 @@ define([
         },
 
         playNextTact: function () {
-            if (this.get('currentTactIndex') < this.tactsCollection.models.length) {
-                this.set('currentTactIndex', this.get('currentTactIndex')+1);
+            var tact = this.tactsCollection.at(this.get('currentTactIndex')+1);
 
-                var tact = this.tactsCollection.at(this.get('currentTactIndex'));
+            if (tact) {
+                this.set('currentTactIndex', this.get('currentTactIndex')+1);
                 tact.set('status', TactModel.STATUS_CURRENT);
 
                 this.tactsCollection.at(this.get('currentTactIndex')-1)
@@ -50,17 +50,11 @@ define([
             }
         },
 
-        //playTact: function () {
-        //    var sounds = this.tactsCollection.models[this.get('currentTactIndex')].sounds;
-        //
-        //    var $dfd = $.Deferred();
-        //    $dfd.promise();
-        //
-        //    var index = 0;
-        //    this.playSound($dfd, sounds, index);
-        //
-        //    return $dfd;
-        //},
+        playTact: function () {
+            return this.playTacts(
+                [this.tactsCollection.at(this.get('currentTactIndex'))]
+            );
+        },
 
         playMelody: function(){
             return this.playTacts(this.tactsCollection.models).done(function(){
@@ -69,7 +63,6 @@ define([
         },
 
         playTacts: function(tacts){
-            debugger;
             var $genDfd = $.Deferred();
             $genDfd.promise();
             var $dfd = $.Deferred();
@@ -84,7 +77,6 @@ define([
 
             $dfd.done(function(){
                 if (index < tacts.length) {
-                    console.log("Tact#" + index);
 
                     var $newDfd = $.Deferred();
                     $newDfd.promise();
@@ -109,7 +101,6 @@ define([
 
         _playSounds: function (sounds, index, $dfd, $genDfd) {
             var that = this;
-            console.log("Sound#" + index);
 
             $dfd.done(function(){
                 if (index < sounds.length) {
@@ -128,8 +119,24 @@ define([
         },
 
         _playNote: function (sound, $dfd) {
-            console.log(sound.get('sound'));
-            $dfd.resolve();
+            var that = this;
+            var noteName = sound.get('sound');
+
+            that.audioManager.getAudio(noteName).done(function (audio) {
+                audio.src = audio.src; // cannot set currentTime without reloading
+
+                $(audio).bind('canplaythrough', function () {
+                    audio.currentTime = 0;
+                    audio.volume = 1.0;
+
+                    setTimeout(function(){
+                        $(audio).unbind('canplaythrough');
+                        $dfd.resolve();
+                    }, sound.getSpeed());
+
+                    audio.play();
+                });
+            });
             return $dfd;
         }
 
