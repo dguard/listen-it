@@ -12,7 +12,8 @@ define([
         events: {
             "mousedown .piano-key": "clickOnPianoKey",
             "mouseup .piano-key": "upPianoKey",
-            "mouseleave .piano-key": "upPianoKey"
+            "mouseleave .piano-key": "upPianoKey",
+            "click .piano-key": "onSelectPianoKey"
         },
 
         initialize: function() {

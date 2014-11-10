@@ -57,9 +57,7 @@ define([
         },
 
         playMelody: function(){
-            return this.playTacts(this.tactsCollection.models).done(function(){
-                alert(1);
-            });
+            return this.playTacts(this.tactsCollection.models);
         },
 
         playTacts: function(tacts){

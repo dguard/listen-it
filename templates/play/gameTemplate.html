@@ -1,0 +1,5 @@
+<div class="game">
+    <button class="clear-btn <%= !game.canClear() ? 'disabled' : '' %>" >Очистить</button>
+    <button class="undo-btn <%= !game.canUndo() ? 'disabled' : '' %>">Отменить</button>
+    <button class="repeat-btn <%= !game.canRepeat() ? 'disabled' : '' %>">Повторить</button>
+</div>

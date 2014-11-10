@@ -54,6 +54,12 @@ define([
             return audio;
         },
 
+        stopAudio: function(){
+            this.each(function(audio){
+                $(audio).trigger('stop', audio);
+            });
+        },
+
         getSupportedFileTypeExt: function()
         {
             var audio = $("<audio>")[0];

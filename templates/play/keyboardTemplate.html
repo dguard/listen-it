@@ -5,7 +5,15 @@
             <div data-note="<%= key.get('note') %>"
                  class="piano-key <%= key.isWhite() ? 'white' : 'black' %>"
                  title="<%= key.get('note') %>"
-            ></div>
+            >
+                <% _.each(key.get('marks'), function(mark) { %>
+                    <div class="mark mark_level_<%= mark %>">
+                        <div class="mark__text">
+                            <%= mark %>
+                        </div>
+                    </div>
+                <% }); %>
+            </div>
 
         <% }); %>
     </div>

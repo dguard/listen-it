@@ -1,3 +1,50 @@
 ul li {
     display: inline;
 }
+
+.tacts-list li {
+    width: 80px;
+    height: 30px;
+    display: inline-block;
+    background: #ecf0f1;
+    border: 3px solid transparent;
+}
+.tacts-list li.current {
+    background: #f1c40f;
+    border: 3px solid #f39c12;
+}
+.tacts-list li.success {
+    background: #2ecc71;
+}
+.tacts-list li.error {
+    background: #e74c3c;
+}
+
+.mark {
+    background: red;
+    width: 25px;
+    height: 25px;
+    border-radius: 5px;
+    position: absolute;
+    bottom: 20px;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    color: #fff;
+    display: table;
+}
+
+.mark__text {
+    text-align: center;
+    display: table-cell;
+    vertical-align: middle;
+    font-size: 14px;
+}
+
+.mark_level_2 {
+    margin-bottom: 35px;
+}
+
+.mark_level_3 {
+    margin-bottom: 70px;
+}
