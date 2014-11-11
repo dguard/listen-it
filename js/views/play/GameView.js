@@ -8,7 +8,10 @@ define([
     'models/sound/SoundModel',
     'text!templates/play/melodyTemplate.html',
     'models/sound/SoundPlayerModel',
-], function($, _, Backbone, gameTemplate, GameModel, KeyboardView, SoundModel, melodyTemplate, SoundPlayerModel){
+    'models/tact/TactModel'
+], function($, _, Backbone, gameTemplate, GameModel, KeyboardView,
+            SoundModel, melodyTemplate, SoundPlayerModel, TactModel
+    ){
 
     var GameView = Backbone.View.extend({
         el: $("#page"),
@@ -34,57 +37,91 @@ define([
         melodyTemplate: _.template(melodyTemplate),
 
         events: {
-            "click .game__clear": 'onClickClearBtn',
-            "click .game__undo": 'onClickUndoBtn',
-            "click .game__repeat": 'onClickRepeatBtn',
-            "click .game__check": 'onClickCheckBtn',
-            "click .piano-key": "onSelectPianoKey",
-            "click .game__next": "clickOnNextBtn",
 
-            "click .game__repeat-tact": "clickOnRepeatBtn",
-            "click .game__skip-tact": "clickOnSkipBtn",
-            "click .game__melody": "clickOnMelodyBtn"
+            "click .game__next": "onClickNext",
+            "click .game__check-tact": 'onClickCheckTact',
+            "click .game__skip-tact": "onClickSkipTact",
+            
+            "click .game__clear-key": 'onClickClearKey',
+            "click .game__undo-key": 'onClickUndoKey',
+            "click .game__repeat-key": 'onClickRepeatKey',
+
+            "click .game__repeat-tact": "onClickRepeatTact",
+            "click .game__melody": "onClickMelody",
+            "click .piano-key": "onSelectPianoKey"
         },
 
 
-        clickOnNextBtn: function(){
-            if(this.game.canPlayNext()) {
-                this.game.melody.playNextTact();
-            } else {
-                this.clickOnRepeatBtn();
+        onClickNext: function(){
+            if(this.game.canEnd()) {
+                this.game.endGame();
+                return;
             }
+            if(this.game.canPlayNext()) {
+                this.game.clearHistory();
+                if(this.game.melody.goToNextTact()) {
+                    this.playCurrentTact();
+                }
+            } else {
+                this.onClickRepeatTact();
+            }
+        },
+
+        onClickCheckTact: function(e){
+            var tact = this.game.melody.getCurrentTact();
+
+            if(this.game.melody.getCurrentTact().get('status') === TactModel.STATUS_SUCCESS) {
+                this.onClickNext();
+            }
+            if(this.game.checkMarks(tact)){
+                this.game.addMessage('Отлично!');
+            } else {
+                this.game.addMessage('Ошибка!');
+            }
+            if(this.game.canEnd()) {
+                this.game.endGame();
+            }
+        },
+
+        onClickSkipTact: function(){
+            if(this.game.canEnd(false)) {
+                this.game.melody.getCurrentTact().set('status', TactModel.STATUS_ERROR);
+                this.game.endGame();
+            }
+            this.game.clearHistory();
+            this.game.melody.goToNextTact() && this.game.melody.playCurrentTact();
         },
 
         onPressKey: function(e){
             switch(e.keyCode) {
                 case 46: // delete
-                    this.onClickClearBtn(e);
+                    this.onClickClearKey(e);
                     break;
                 case 37: // left
-                    this.onClickUndoBtn(e);
+                    this.onClickUndoKey(e);
                     break;
 
                 case 38: // up
-                    this.onClickRepeatBtn(e);
+                    this.onClickRepeatKey(e);
                     break;
 
                 case 39: // right
-                    this.onClickRepeatBtn(e);
+                    this.onClickRepeatKey(e);
                     break;
 
                 case 40: // down
-                    this.onClickUndoBtn(e);
+                    this.onClickUndoKey(e);
                     break;
                 case 13: // enter
                     if (event.ctrlKey) {
-                        this.clickOnMelodyBtn(e);
+                        this.onClickMelody(e);
                     } else if (event.altKey) {
-                        this.onClickCheckBtn(e);
+                        this.onClickCheckTact(e);
                     } else if (event.shiftKey) {
                         var sounds = this.game.getMarksAsSounds();
                         this.game.melody.soundPlayer.playSounds(sounds);
                     } else {
-                        this.clickOnRepeatBtn(e);
+                        this.onClickRepeatTact(e);
                     }
                     break;
 
@@ -101,37 +138,23 @@ define([
             }
         },
 
-        onClickClearBtn: function(e){
+        onClickClearKey: function(e){
             this.game.clearMarks();
         },
 
-        onClickCheckBtn: function(e){
-            var tact = this.game.melody.getCurrentTact();
-
-            if(this.game.checkMarks(tact)){
-                this.game.addMessage('Отлично!');
-            } else {
-                this.game.addMessage('Ошибка!');
-            }
-        },
-
-        onClickUndoBtn: function(e){
+        onClickUndoKey: function(e){
             this.game.undoMark();
         },
 
-        onClickRepeatBtn: function(e){
+        onClickRepeatKey: function(e){
             this.game.repeatMark();
         },
 
-        clickOnRepeatBtn: function(){
+        onClickRepeatTact: function(){
             this.game.melody.playCurrentTact();
         },
 
-        clickOnSkipBtn: function(){
-            this.game.melody.playNextTact();
-        },
-
-        clickOnMelodyBtn: function(){
+        onClickMelody: function(){
             this.game.melody.playMelody();
         },
 

@@ -1,19 +1,22 @@
 <div class="game">
 
     Действия с отмеченными нотами:<br>
-    <button class="game__clear <%= !game.canClear() ? 'disabled' : '' %>" >Очистить</button>
-    <button class="game__undo <%= !game.canUndo() ? 'disabled' : '' %>">Отменить последнее добавление</button>
-    <button class="game__repeat <%= !game.canRepeat() ? 'disabled' : '' %>">Повторить последнее добавление ноты</button>
+    <button class="game__clear-key <%= !game.canClear() ? 'disabled' : '' %>" >Очистить</button>
+    <button class="game__undo-key <%= !game.canUndo() ? 'disabled' : '' %>">Отменить последнее добавление</button>
+    <button class="game__repeat-key <%= !game.canRepeat() ? 'disabled' : '' %>">Повторить последнее добавление ноты</button>
 
     <br><br>
 
     Опции игры<br>
     <button class="game__repeat-tact">Повторить последний такт</button>
-    <button class="game__skip-tact">Пропустить такт</button>
-    <button class="game__next">Далее</button>
-    <button class="game__check <%= !game.canCheckMarks() ? 'disabled' : '' %>">Проверить</button>
     <button class="game__melody">Прослушать мелодию полностью</button>
 
+    <br><br>
+    <button class="game__skip-tact">Пропустить такт</button>
+    <button class="game__next">Далее</button>
+    <button class="game__check-tact <%= !game.canCheckMarks() ? 'disabled' : '' %>">Проверить</button>
+
+    <br>
     <% if (game.getLastMessage()) { %>
         <%= game.getLastMessage()  %>
     <% } %>

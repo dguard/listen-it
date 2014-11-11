@@ -57,6 +57,16 @@ define([
           this.clearOnSelect = true;
        }
     },
+
+    clearHistory: function(){
+        var marks = this.get('marks');
+        _.each(marks, function(key){
+            key.set('marks', []);
+            key.doRender();
+        });
+        this.set('marks', []);
+        this.set('history_marks', []);
+    },
     
     addMark: function(key){
        var marks = this.get('marks');
@@ -131,6 +141,21 @@ define([
         }
         return sounds;
     },
+
+    endGame: function(){
+        var compares = 0;
+        _.each(this.melody.tacts.models, function(tact){
+            if(tact.get('status') === TactModel.STATUS_SUCCESS) {
+                compares++;
+            }
+        });
+        alert(
+            'Здесь должен быть воодушевляющий текст...\r\n ' +
+            'Но мы то знаем, что он никому не нужен!\r\n ' +
+            'Я просто скажу, что ты угадал ' + compares +
+            ' из ' + this.melody.tacts.models.length + '.\r\n Это очень здорово!'
+        );
+    },
     
     canUndo: function(){
        return this.get('marks').length > 0;
@@ -156,8 +181,19 @@ define([
         return this.get('can_show_message');
     },
 
-    canPlayNext: function(){
-        return true;
+    canPlayNext: function(compareStatus){
+        compareStatus || (compareStatus = true);
+        var tact = this.melody.getCurrentTact();
+        var status = tact.get('status');
+        return !this.melody.isLastTact(tact) && (!compareStatus || this.melody.isSolvedTact(tact));
+    },
+
+    canEnd: function(compareStatus){
+        (compareStatus === false) || (compareStatus = true);
+
+        var tact = this.melody.getCurrentTact();
+        var status = tact.get('status');
+        return this.melody.isLastTact(tact) && (!compareStatus || this.melody.isSolvedTact(tact));
     }
 });
     return GameModel;

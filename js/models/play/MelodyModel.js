@@ -33,38 +33,44 @@ define([
             return this.tacts.at(this.get('tact_index'));
         },
 
-        playCurrentTact: function () {
-            var tact = this.tacts.at(this.get('tact_index'));
-            tact.set('status', TactModel.STATUS_CURRENT);
-            this.set('count_renders', this.get('count_renders')+1);
-
-            this.playTact();
+        isLastTact: function(tact){
+            return this.tacts.indexOf(tact) === this.tacts.length-1;
         },
 
-        playNextTact: function () {
-            var tact = this.tacts.at(this.get('tact_index')+1);
+        isSolvedTact: function(tact){
+            var status = tact.get('status');
+            return status === TactModel.STATUS_ERROR || status === TactModel.STATUS_SUCCESS;
+        },
 
-            if (tact) {
+        playCurrentTact: function () {
+            var tact = this.getCurrentTact();
+            this.playTact(tact);
+        },
+
+        goToNextTact: function(){
+            var prevTact = this.getCurrentTact();
+
+            if(this.get('tact_index')+1 < this.tacts.length) {
                 this.set('tact_index', this.get('tact_index')+1);
+
+                var tact = this.getCurrentTact();
                 tact.set('status', TactModel.STATUS_CURRENT);
 
-                var prevTact = this.tacts.at(this.get('tact_index')-1);
                 if(prevTact.get('status') !== TactModel.STATUS_SUCCESS) {
                     prevTact.set('status', TactModel.STATUS_ERROR);
                 }
                 this.set('count_renders', this.get('count_renders')+1);
-
-                this.playTact();
+                return true;
             }
+            return false;
         },
 
         playMelody: function(){
             return this.soundPlayer.playTacts(this.tacts.models);
         },
 
-        playTact: function () {
-            var sounds = this.tacts.at(this.get('tact_index')).sounds;
-            return this.soundPlayer.playSounds(sounds);
+        playTact: function (tact) {
+            return this.soundPlayer.playSounds(tact.sounds);
         }
     });
 
