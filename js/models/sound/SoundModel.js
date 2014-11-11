@@ -6,7 +6,7 @@ define([
     var SoundModel = Backbone.Model.extend({
 
         initialize: function( options ) {
-            this.sound = options.sound;
+            this.note = options.note;
             this.duration = options.duration;
         },
 

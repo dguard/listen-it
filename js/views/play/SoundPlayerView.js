@@ -17,12 +17,13 @@ define([
                 }
             });
             this.soundPlayerModel.on('change:countOfRenders', this.render, this);
+            this.soundPlayerModel.tactsCollection.on('change', this.render, this);
         },
 
         events: {
             "click .repeat-btn": "clickOnRepeatBtn",
             "click .skip-btn": "clickOnSkipBtn",
-            "click .play-btn": "clickOnPlayBtn"
+            "click .melody-btn": "clickOnMelodyBtn"
         },
 
         soundPlayerTemplate: _.template(soundPlayerTemplate),
@@ -35,7 +36,7 @@ define([
             this.soundPlayerModel.playNextTact();
         },
 
-        clickOnPlayBtn: function(){
+        clickOnMelodyBtn: function(){
             this.soundPlayerModel.playMelody();
         },
 

@@ -3,8 +3,9 @@ define([
     'underscore',
     'backbone',
     'text!templates/play/keyboardTemplate.html',
-    'models/play/KeyboardModel'
-], function($, _, Backbone, keyboardTemplate, KeyboardModel){
+    'models/play/KeyboardModel',
+    'views/play/KeyView',
+], function($, _, Backbone, keyboardTemplate, KeyboardModel, KeyView){
 
     var KeyboardView = Backbone.View.extend({
         el: $("#page"),
@@ -12,13 +13,15 @@ define([
         events: {
             "mousedown .piano-key": "clickOnPianoKey",
             "mouseup .piano-key": "upPianoKey",
-            "mouseleave .piano-key": "upPianoKey",
-            "click .piano-key": "onSelectPianoKey"
+            "mouseleave .piano-key": "upPianoKey"
         },
 
         initialize: function() {
             var that = this;
             that.keyboard = new KeyboardModel({onInit: function(){
+                _.each(that.keyboard.keys.models, function(pianoKey){
+                    new KeyView(pianoKey); // link model to view
+                });
                 that.render();
             }});
         },

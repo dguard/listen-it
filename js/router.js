@@ -37,8 +37,8 @@ define([
         });
 
         app_router.on('route:playGame', function(){
-            var uploadView = new PlayView();
-            uploadView.render();
+            var playView = new PlayView();
+            playView.render();
         });
 
         app_router.on('route:showResult', function(){

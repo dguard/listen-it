@@ -48,3 +48,19 @@ ul li {
 .mark_level_3 {
     margin-bottom: 70px;
 }
+
+.mark_level_4 {
+    margin-bottom: 105px;
+}
+
+.mark_level_5 {
+    margin-bottom: 140px;
+}
+
+.mark_level_6 {
+    margin-bottom: 175px;
+}
+
+.help li {
+    display: block;
+}

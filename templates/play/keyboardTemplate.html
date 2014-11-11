@@ -2,19 +2,7 @@
     <div class="backboard"></div>
     <div class="keys">
         <% _.each(keys, function(key){ %>
-            <div data-note="<%= key.get('note') %>"
-                 class="piano-key <%= key.isWhite() ? 'white' : 'black' %>"
-                 title="<%= key.get('note') %>"
-            >
-                <% _.each(key.get('marks'), function(mark) { %>
-                    <div class="mark mark_level_<%= mark %>">
-                        <div class="mark__text">
-                            <%= mark %>
-                        </div>
-                    </div>
-                <% }); %>
-            </div>
-
+            <%= key.view.render() %>
         <% }); %>
     </div>
 </div>

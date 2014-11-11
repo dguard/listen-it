@@ -7,35 +7,35 @@
                 "beat": "4/4",
                 "sounds": [
                    
-                    {"sound": "4G", "duration": "1/2"},
-                    {"sound": "4E", "duration": "1/4"},
-                    {"sound": "4E", "duration": "1/4"}
+                    {"note": "4G", "duration": "1/2"},
+                    {"note": "4E", "duration": "1/4"},
+                    {"note": "4E", "duration": "1/4"}
                 ]
             },
             {
                 "temp": 80,
                 "beat": "4/4",
                 "sounds": [
-                    {"sound": "4G", "duration": "1/2"},
-                    {"sound": "4E", "duration": "1/4"},
-                    {"sound": "4E", "duration": "1/4"}
+                    {"note": "4G", "duration": "1/2"},
+                    {"note": "4E", "duration": "1/4"},
+                    {"note": "4E", "duration": "1/4"}
                 ]
             },
             {
                 "temp": 80,
                 "beat": "4/4",
                 "sounds": [
-                    {"sound": "4G", "duration": "1/4"},
-                    {"sound": "4F", "duration": "1/4"},
-                    {"sound": "4E", "duration": "1/4"},
-                    {"sound": "4D", "duration": "1/4"}
+                    {"note": "4G", "duration": "1/4"},
+                    {"note": "4F", "duration": "1/4"},
+                    {"note": "4E", "duration": "1/4"},
+                    {"note": "4D", "duration": "1/4"}
                 ]
             },
             {
                 "temp": 80,
                 "beat": "4/4",
                 "sounds": [
-                    {"sound": "4C", "duration": "4/4"}
+                    {"note": "4C", "duration": "4/4"}
                 ]
             }
         ]
