@@ -1,17 +1,23 @@
-ul li {
-    display: inline;
+body {
+    min-width: 900px;
+    margin: 10px 0 0;
+}
+
+.tacts-list {
+    display: inline-block;
 }
 
 .tacts-list li {
-    width: 80px;
-    height: 30px;
+    width: 100px;
+    height: 50px;
     display: inline-block;
     background: #ecf0f1;
-    border: 3px solid transparent;
+    border: 2px solid transparent;
+    border-radius: 3px;
 }
 .tacts-list li.current {
     background: #f1c40f;
-    border: 3px solid #f39c12;
+    border: 2px solid #f39c12;
 }
 .tacts-list li.success {
     background: #2ecc71;
@@ -63,4 +69,17 @@ ul li {
 
 .help li {
     display: block;
+}
+
+.melody {
+    text-align: center;
+    margin: 20px 0 10px;
+}
+
+.inline-block {
+    display: inline-block;
+}
+
+.margin-top-10 {
+    margin-top: 20px;
 }

@@ -55,6 +55,7 @@ define([
           this.set('history_marks', history_marks);
           this.set('marks', []);
           this.clearOnSelect = true;
+          this.doRender();
        }
     },
 
@@ -77,10 +78,15 @@ define([
        key_marks.push(this.get('marks').length);
        key.set({'marks': key_marks});
        key.doRender();
-    
+
        if(this.clearOnSelect) {
           this.set('history_marks', []);
        }
+       this.doRender();
+    },
+
+    doRender: function(){
+        this.set({'random': Math.random()});
     },
     
     undoMark: function(){
@@ -96,8 +102,9 @@ define([
           key_marks.pop();
           key.set('marks', key_marks);
           key.doRender();
-    
+
           this.set('marks', marks);
+          this.doRender();
        }
     },
     
@@ -107,6 +114,7 @@ define([
           var key = history_marks.pop();
           this.addMark(key);
           this.set('history_marks', history_marks);
+          this.doRender();
        }
     },
 
@@ -127,6 +135,7 @@ define([
             }
         }
         tact.set('status', TactModel.STATUS_ERROR);
+        this.doRender();
         return false;
     },
 
@@ -174,7 +183,7 @@ define([
     },
 
     canCheckMarks: function(){
-       return true;
+        return this.get('marks').length > 0;
     },
 
     canShowMessage: function(){
@@ -184,15 +193,22 @@ define([
     canPlayNext: function(compareStatus){
         compareStatus || (compareStatus = true);
         var tact = this.melody.getCurrentTact();
-        var status = tact.get('status');
         return !this.melody.isLastTact(tact) && (!compareStatus || this.melody.isSolvedTact(tact));
+    },
+
+    canPlayPiano: function(){
+        return this.get('marks').length > 0;
+    },
+
+    canSkipTact: function(){
+        var tact = this.melody.getCurrentTact();
+        return !(this.melody.isLastTact(tact) && this.melody.isSolvedTact(tact));
     },
 
     canEnd: function(compareStatus){
         (compareStatus === false) || (compareStatus = true);
 
         var tact = this.melody.getCurrentTact();
-        var status = tact.get('status');
         return this.melody.isLastTact(tact) && (!compareStatus || this.melody.isSolvedTact(tact));
     }
 });

@@ -42,7 +42,7 @@ define([
                 _: _
             };
             var compiledTemplate = _.template(keyboardTemplate);
-            this.$el.find('.keyboard').html(compiledTemplate(data));
+            this.$el.find('.keyboard').replaceWith(compiledTemplate(data));
 
             return this;
         },

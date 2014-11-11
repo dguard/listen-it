@@ -1,36 +1,84 @@
-<div class="game">
+<div class="game text-center">
 
-    Действия с отмеченными нотами:<br>
-    <button class="game__clear-key <%= !game.canClear() ? 'disabled' : '' %>" >Очистить</button>
-    <button class="game__undo-key <%= !game.canUndo() ? 'disabled' : '' %>">Отменить последнее добавление</button>
-    <button class="game__repeat-key <%= !game.canRepeat() ? 'disabled' : '' %>">Повторить последнее добавление ноты</button>
+    <div class="pull-left">
+        <h3>Фортепиано</h3>
 
-    <br><br>
+        <div class="btn-group btn-group-lg">
+            <button class="btn btn-warning game__clear-key" <%= !game.canClear() ? 'disabled' : '' %>
+                type="button" title="Очистить все ноты на фортепиано">
+                <span class="glyphicon glyphicon-trash"></span>
+            </button>
 
-    Прослушивание:<br>
-    <button class="game__repeat-tact">Повторить последний такт</button>
-    <button class="game__melody">Прослушать мелодию полностью</button>
-    <br><br>
+            <button class="btn btn-default game__undo-key" <%= !game.canUndo() ? 'disabled' : '' %>
+                type="button" title="Удалить последнюю ноту на фортепиано">
+                <span class="glyphicon glyphicon glyphicon-step-backward"></span>
+            </button>
 
-    Опции игры:<br>
-    <button class="game__skip-tact">Пропустить такт</button>
-    <button class="game__next">Далее</button>
-    <button class="game__check-tact <%= !game.canCheckMarks() ? 'disabled' : '' %>">Проверить</button>
+            <button class="btn btn-default game__repeat-key" <%= !game.canRepeat() ? 'disabled' : '' %>
+                type="button" title="Повторить последнее добавление ноты на фортепиано">
+                <span class="glyphicon glyphicon glyphicon-step-forward"></span>
+            </button>
 
-    <br>
+            <button class="btn btn-primary game__play-piano" <%= !game.canPlayPiano() ? 'disabled' : '' %>
+                type="button" title="Проиграть ноты на фортепиано">
+                <span class="glyphicon glyphicon-play"></span>
+            </button>
+
+        </div>
+    </div>
+
+    <div class="inline-block">
+        <h3>Игра</h3>
+
+        <div class="btn-group btn-group-lg">
+            <button class="btn btn-danger game__skip-tact" <%= !game.canSkipTact() ? 'disabled' : '' %>
+                title="Пропустить такт">
+                <span class="glyphicon glyphicon-fire"></span>
+            </button>
+            <button class="btn btn-default game__next" title="Далее">
+                <span class="glyphicon glyphicon glyphicon-play"></span>
+            </button>
+            <button class="btn btn-success game__check-tact" <%= !game.canCheckMarks() ? 'disabled' : '' %>
+                title="Проверить">
+                <span class="glyphicon glyphicon-ok"></span>
+            </button>
+        </div>
+    </div>
+
+    <div class="pull-right">
+        <h3>Прослушивание</h3>
+        <div class="btn-group btn-group-lg">
+            <button class="btn btn-info game__repeat-tact" title="Повторить последний такт">
+                <span class="glyphicon glyphicon-repeat"></span>
+            </button>
+            <button class="btn btn-default game__melody" title="Прослушать мелодию полностью">
+                <span class="glyphicon glyphicon-music"></span>
+            </button>
+        </div>
+    </div>
+
     <% if (game.getLastMessage()) { %>
-        <%= game.getLastMessage()  %>
+        <% if(game.getLastMessage().status === 'success') { %>
+            <div class="alert alert-success margin-top-10" role="alert">
+                <%= game.getLastMessage().text %>
+            </div>
+        <% } %>
+        <% if(game.getLastMessage().status === 'error') { %>
+            <div class="alert alert-danger margin-top-10" role="alert">
+                <%= game.getLastMessage().text %>
+            </div>
+        <% } %>
     <% } %>
 
-    <ul class="help">
-        <li>Очистить - <b>Backspace</b></li>
-        <li>Отменить - <b>Стрелка влево</b></li>
-        <li>Повторить - <b>Стрелка вправо</b></li>
+    <!--<ul class="help">-->
+        <!--<li>Очистить - <b>Backspace</b></li>-->
+        <!--<li>Отменить - <b>Стрелка влево</b></li>-->
+        <!--<li>Повторить - <b>Стрелка вправо</b></li>-->
 
-        <li>Проверить - <b>Alt + Enter</b></li>
+        <!--<li>Проверить - <b>Alt + Enter</b></li>-->
 
-        <li>Повторить - <b>Enter</b></li>
-        <li>Проиграть мелодию на клавиатуре - <b>Shift + Enter</b></li>
-        <li>Прослушать мелодию - <b>Ctrl + Enter</b></li>
-    </ul>
+        <!--<li>Повторить - <b>Enter</b></li>-->
+        <!--<li>Проиграть мелодию на клавиатуре - <b>Shift + Enter</b></li>-->
+        <!--<li>Прослушать мелодию - <b>Ctrl + Enter</b></li>-->
+    <!--</ul>-->
 </div>

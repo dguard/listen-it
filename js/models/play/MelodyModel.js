@@ -38,8 +38,11 @@ define([
         },
 
         isSolvedTact: function(tact){
-            var status = tact.get('status');
-            return status === TactModel.STATUS_ERROR || status === TactModel.STATUS_SUCCESS;
+            if(tact) {
+                var status = tact.get('status');
+                return status === TactModel.STATUS_ERROR || status === TactModel.STATUS_SUCCESS;
+            }
+            return false;
         },
 
         playCurrentTact: function () {

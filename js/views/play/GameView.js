@@ -41,6 +41,7 @@ define([
             "click .game__next": "onClickNext",
             "click .game__check-tact": 'onClickCheckTact',
             "click .game__skip-tact": "onClickSkipTact",
+            "click .game__play-piano": "onClickPlayPiano",
             
             "click .game__clear-key": 'onClickClearKey',
             "click .game__undo-key": 'onClickUndoKey',
@@ -74,9 +75,9 @@ define([
                 this.onClickNext();
             }
             if(this.game.checkMarks(tact)){
-                this.game.addMessage('Отлично!');
+                this.game.addMessage({text: 'Верно!', 'status': 'success'});
             } else {
-                this.game.addMessage('Ошибка!');
+                this.game.addMessage({text: 'Вы ошиблись!', 'status': 'error'});
             }
             if(this.game.canEnd()) {
                 this.game.endGame();
@@ -118,8 +119,7 @@ define([
                     } else if (event.altKey) {
                         this.onClickCheckTact(e);
                     } else if (event.shiftKey) {
-                        var sounds = this.game.getMarksAsSounds();
-                        this.game.melody.soundPlayer.playSounds(sounds);
+                        this.onClickPlayPiano(e);
                     } else {
                         this.onClickRepeatTact(e);
                     }
@@ -156,6 +156,11 @@ define([
 
         onClickMelody: function(){
             this.game.melody.playMelody();
+        },
+
+        onClickPlayPiano: function(){
+            var sounds = this.game.getMarksAsSounds();
+            this.game.melody.soundPlayer.playSounds(sounds);
         },
 
         render: function(){
