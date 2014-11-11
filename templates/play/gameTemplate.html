@@ -7,11 +7,12 @@
 
     <br><br>
 
-    Опции игры<br>
+    Прослушивание:<br>
     <button class="game__repeat-tact">Повторить последний такт</button>
     <button class="game__melody">Прослушать мелодию полностью</button>
-
     <br><br>
+
+    Опции игры:<br>
     <button class="game__skip-tact">Пропустить такт</button>
     <button class="game__next">Далее</button>
     <button class="game__check-tact <%= !game.canCheckMarks() ? 'disabled' : '' %>">Проверить</button>
@@ -22,14 +23,14 @@
     <% } %>
 
     <ul class="help">
-        <li>Очистить - Backspace</li>
-        <li>Отменить - Стрелка влево</li>
-        <li>Повторить - Стрелка вправо</li>
+        <li>Очистить - <b>Backspace</b></li>
+        <li>Отменить - <b>Стрелка влево</b></li>
+        <li>Повторить - <b>Стрелка вправо</b></li>
 
-        <li>Проверить - Alt + Enter</li>
+        <li>Проверить - <b>Alt + Enter</b></li>
 
-        <li>Повторить - Enter</li>
-        <li>Проиграть мелодию на клавиатуре - Shift + Enter</li>
-        <li>Прослушать мелодию - Ctrl + Enter</li>
+        <li>Повторить - <b>Enter</b></li>
+        <li>Проиграть мелодию на клавиатуре - <b>Shift + Enter</b></li>
+        <li>Прослушать мелодию - <b>Ctrl + Enter</b></li>
     </ul>
 </div>
