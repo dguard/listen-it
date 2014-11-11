@@ -73,7 +73,7 @@ body {
 
 .melody {
     text-align: center;
-    margin: 20px 0 10px;
+    margin: 15px 0 0;
 }
 
 .inline-block {
@@ -81,5 +81,5 @@ body {
 }
 
 .margin-top-10 {
-    margin-top: 20px;
+    margin-top: 10px;
 }

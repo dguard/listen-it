@@ -2,6 +2,6 @@ Listen It
 =================================
 Развитие музыкального слуха в игровой форме
 
-[Страница проекта на вики Yandex](http://school-wiki.yandex.ru/shad/ekb/courses/fall2014/python/p1)
+[Демо](https://rawgit.com/dguard/listen-by-your-heart/master/index.html#play)
 
-[Документ с описанием на Google.Docs](https://docs.google.com/document/d/11PNQOGzNSi-sbBXr7QMKGXzsPe7MTKvNhHGx603mx8A/edit?usp=sharing)
+[Страница проекта на вики Yandex](http://school-wiki.yandex.ru/shad/ekb/courses/fall2014/python/p1)
