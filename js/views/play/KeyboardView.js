@@ -13,7 +13,10 @@ define([
         events: {
             "mousedown .piano-key": "clickOnPianoKey",
             "mouseup .piano-key": "upPianoKey",
-            "mouseleave .piano-key": "upPianoKey"
+            "mouseleave .piano-key": "upPianoKey",
+
+            "touchstart .piano-key": "clickOnPianoKey",
+            "touchend .piano-key": "upPianoKey",
         },
 
         initialize: function() {
@@ -58,15 +61,14 @@ define([
 
         playNote: function(noteName){
             var that = this;
-            this.keyboard.audioManager.getAudio(noteName).done(function(audio){
-                audio.src = audio.src; // cannot set currentTime without reloading
 
-                $(audio).on('canplaythrough', function(){
-                    audio.currentTime = 0;
-                    audio.volume = that.keyboard.volume;
-                    audio.play();
-                });
+            var $dfd = $.Deferred();
+            $dfd.done(function(audio){
+                audio.currentTime = 0;
+                audio.volume = that.keyboard.volume;
+                audio.play();
             });
+            this.keyboard.audioManager.getAudio(noteName, function(){}, $dfd);
         },
 
         onKeyUp: function($key) {

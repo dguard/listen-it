@@ -20,9 +20,9 @@ define([
             this.audioExt = this.getSupportedFileTypeExt();
         },
 
-        getAudio: function(name, onError)
+        getAudio: function(name, onError, $dfd)
         {
-            var $dfd = $.Deferred();
+            $dfd || ($dfd = $.Deferred());
             name = escape(name);
             var audio = this.audios[name];
             if (!audio) {

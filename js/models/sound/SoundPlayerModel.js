@@ -73,21 +73,19 @@ define([
             var that = this;
             var noteName = sound.get('note');
 
-            that.audioManager.getAudio(noteName).done(function (audio) {
-                audio.src = audio.src; // cannot set currentTime without reloading
+            var $newDfd = $.Deferred();
+            $newDfd.done(function (audio) {
+                audio.currentTime = 0;
+                audio.volume = 1.0;
 
-                $(audio).bind('canplaythrough', function () {
-                    audio.currentTime = 0;
-                    audio.volume = 1.0;
+                setTimeout(function(){
+                    $dfd.resolve();
+                }, sound.getSpeed());
 
-                    setTimeout(function(){
-                        $(audio).unbind('canplaythrough');
-                        $dfd.resolve();
-                    }, sound.getSpeed());
-
-                    audio.play();
-                });
+                audio.play();
             });
+
+            that.audioManager.getAudio(noteName, function(){}, $newDfd);
             return $dfd;
         }
 

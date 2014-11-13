@@ -129,7 +129,6 @@ define([
             }
             e.preventDefault(); // prevent the default action (scroll / move caret)
         },
-
         onSelectPianoKey: function(e){
             var note = $(e.currentTarget).data('note');
             var key = this.keyboardView.keyboard.keys.where({note: note})[0];
@@ -137,7 +136,6 @@ define([
                 this.game.addMark(key);
             }
         },
-
         onClickClearKey: function(e){
             this.game.clearMarks();
         },
@@ -157,12 +155,10 @@ define([
         onClickMelody: function(){
             this.game.melody.playMelody();
         },
-
         onClickPlayPiano: function(){
             var sounds = this.game.getMarksAsSounds();
             this.game.melody.soundPlayer.playSounds(sounds);
         },
-
         render: function(){
             this.renderGame();
             this.renderMelody();
