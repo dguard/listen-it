@@ -2,8 +2,8 @@ define([
     'jquery',
     'underscore',
     'backbone',
-    'text!templates/play/keyTemplate.html',
-    'models/play/KeyModel'
+    'text!templates/game/keyTemplate.html',
+    'models/game/KeyModel'
 ], function($, _, Backbone, keyTemplate, KeyModel){
 
     var KeyView = Backbone.View.extend({

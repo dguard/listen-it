@@ -8,6 +8,14 @@ define([
     var HomeView = Backbone.View.extend({
         el: $("#page"),
 
+        'events': {
+            'click .btn-go-to-upload': 'onClickGoToUpload'
+        },
+
+        'onClickGoToUpload': function(){
+            Backbone.history.navigate('!upload', {'trigger': true});
+        },
+
         render: function(){
             this.$el.html(homeTemplate);
         }

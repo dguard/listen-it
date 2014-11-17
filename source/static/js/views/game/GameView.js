@@ -2,15 +2,16 @@ define([
     'jquery',
     'underscore',
     'backbone',
-    'text!templates/play/gameTemplate.html',
-    'models/play/GameModel',
-    'views/play/KeyboardView',
+    'text!templates/game/gameTemplate.html',
+    'models/game/GameModel',
+    'views/game/KeyboardView',
     'models/sound/SoundModel',
-    'text!templates/play/melodyTemplate.html',
+    'text!templates/game/melodyTemplate.html',
     'models/sound/SoundPlayerModel',
-    'models/tact/TactModel'
+    'models/tact/TactModel',
+    'text!templates/game/mainTemplate.html'
 ], function($, _, Backbone, gameTemplate, GameModel, KeyboardView,
-            SoundModel, melodyTemplate, SoundPlayerModel, TactModel
+            SoundModel, melodyTemplate, SoundPlayerModel, TactModel, mainTemplate
     ){
 
     var GameView = Backbone.View.extend({
@@ -18,23 +19,28 @@ define([
 
         initialize: function(options){
             this.game = new GameModel();
-            this.keyboardView = new KeyboardView();
             this.game.on('change', this.render, this);
             this.game.melody.on('change', this.render, this);
             this.game.melody.tacts.on('change', this.render, this);
 
             var that = this;
-            this.game.melody.$whenInited.done(function(){
+
+            this.keyboardView = new KeyboardView();
+
+            this.game.melody.on('change:loaded', function(){
                 that.renderMelody();
             });
             $(document).on('keydown', $.proxy(this.onPressKey, this));
 
-            this.render();
+            this.renderMain();
+            this.renderGame();
         },
 
         gameTemplate: _.template(gameTemplate),
 
         melodyTemplate: _.template(melodyTemplate),
+
+        mainTemplate: _.template(mainTemplate),
 
         events: {
 
@@ -101,15 +107,12 @@ define([
                 case 37: // left
                     this.onClickUndoKey(e);
                     break;
-
                 case 38: // up
                     this.onClickRepeatKey(e);
                     break;
-
                 case 39: // right
                     this.onClickRepeatKey(e);
                     break;
-
                 case 40: // down
                     this.onClickUndoKey(e);
                     break;
@@ -139,19 +142,15 @@ define([
         onClickClearKey: function(e){
             this.game.clearMarks();
         },
-
         onClickUndoKey: function(e){
             this.game.undoMark();
         },
-
         onClickRepeatKey: function(e){
             this.game.repeatMark();
         },
-
         onClickRepeatTact: function(){
             this.game.melody.playCurrentTact();
         },
-
         onClickMelody: function(){
             this.game.melody.playMelody();
         },
@@ -159,17 +158,22 @@ define([
             var sounds = this.game.getMarksAsSounds();
             this.game.melody.soundPlayer.playSounds(sounds);
         },
+        renderMain: function(){
+            this.$el.html(
+                this.mainTemplate()
+            );
+        },
         render: function(){
             this.renderGame();
             this.renderMelody();
         },
         renderGame: function(){
-            this.$el.find('.game').replaceWith(
+            $('.game').replaceWith(
                 this.gameTemplate({ game: this.game })
             );
         },
         renderMelody: function(){
-            this.$el.find('.melody').replaceWith(
+            $('.melody').replaceWith(
                 this.melodyTemplate({ tacts: this.game.melody.tacts.models })
             );
         }

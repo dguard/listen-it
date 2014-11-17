@@ -2,7 +2,7 @@ define([
     'underscore',
     'backbone',
     'collections/tact/TactsCollection',
-    'models/play/AudioManager',
+    'models/game/AudioManager',
     'models/tact/TactModel'
 ], function(_, Backbone, TactsCollection, AudioManager) {
 

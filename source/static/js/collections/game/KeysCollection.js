@@ -1,7 +1,7 @@
 define([
     'underscore',
     'backbone',
-    'models/play/KeyModel'
+    'models/game/KeyModel'
 ], function(_, Backbone, KeyModel){
 
     var KeysCollection = Backbone.Collection.extend({

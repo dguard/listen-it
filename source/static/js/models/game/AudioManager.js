@@ -54,12 +54,6 @@ define([
             return audio;
         },
 
-        stopAudio: function(){
-            this.each(function(audio){
-                $(audio).trigger('stop', audio);
-            });
-        },
-
         getSupportedFileTypeExt: function()
         {
             var audio = $("<audio>")[0];
@@ -67,13 +61,6 @@ define([
             if (audio.canPlayType("audio/mpeg")) return ".mp3";
             if (audio.canPlayType("audio/wav")) return ".wav";
             return "";
-        },
-
-        each: function(callback)
-        {
-            for (var i in this.audios) {
-                callback(this.audios[i]);
-            }
         }
     });
 

@@ -2,10 +2,10 @@ define([
     'underscore',
     'backbone',
     'models/tact/TactModel',
-    'models/play/MelodyModel',
-    'models/sound/SoundModel'
+    'models/game/MelodyModel',
+    'models/sound/SoundModel',
+//    'models/storage/storage'
 ], function(_, Backbone, TactModel, MelodyModel, SoundModel) {
-
     var GameModel = Backbone.Model.extend({
 
     defaults: {
@@ -15,7 +15,15 @@ define([
     },
 
     initialize: function(options) {
-        this.melody = new MelodyModel()
+        this.melody = new MelodyModel();
+        var that = this;
+
+        // for updating view when user goes to another page and reloads current
+        setTimeout(function(){
+            _.each(that.get('marks'), function(key){
+                key.doRender();
+            })
+        }, 100);
     },
 
     _push: function(arg, val) {

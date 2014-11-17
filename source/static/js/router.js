@@ -5,17 +5,15 @@ define([
     'backbone',
     'views/home/HomeView',
     'views/upload/UploadView',
-    'views/level/LevelView',
-    'views/play/PlayView',
+    'views/game/GameView',
     'views/result/ResultView'
-], function($, _, Backbone, HomeView, UploadView, LevelView, PlayView, ResultView){
+], function($, _, Backbone, HomeView, UploadView, GameView, ResultView){
     var AppRouter = Backbone.Router.extend({
         routes: {
             // Define some URL routes
-            'upload': 'uploadFile',
-            'level': 'chooseLevel',
-            'play': 'playGame',
-            'result': 'showResult',
+            '!upload': 'uploadFile',
+            '!game': 'playGame',
+            '!result': 'showResult',
 
             // Default
             '*actions': 'defaultAction'
@@ -31,14 +29,9 @@ define([
             uploadView.render();
         });
 
-        app_router.on('route:chooseLevel', function () {
-            var levelView = new LevelView();
-            levelView.render();
-        });
-
         app_router.on('route:playGame', function(){
-            var playView = new PlayView();
-            playView.render();
+            var gameView = new GameView();
+            gameView.render();
         });
 
         app_router.on('route:showResult', function(){

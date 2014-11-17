@@ -12,12 +12,6 @@ app = Flask(__name__, static_url_path='')
 def root():
     return app.send_static_file('index.html')
 
-
-@app.route("/upload.html")
-def upload_page():
-    return app.send_static_file('upload.html')
-
-
 @app.route("/upload", methods=['POST'])
 def upload():
     file = request.files.get("file")

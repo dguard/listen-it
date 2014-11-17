@@ -2,9 +2,9 @@ define([
     'jquery',
     'underscore',
     'backbone',
-    'text!templates/play/keyboardTemplate.html',
-    'models/play/KeyboardModel',
-    'views/play/KeyView',
+    'text!templates/game/keyboardTemplate.html',
+    'models/game/KeyboardModel',
+    'views/game/KeyView'
 ], function($, _, Backbone, keyboardTemplate, KeyboardModel, KeyView){
 
     var KeyboardView = Backbone.View.extend({
@@ -16,17 +16,20 @@ define([
             "mouseleave .piano-key": "upPianoKey",
 
             "touchstart .piano-key": "clickOnPianoKey",
-            "touchend .piano-key": "upPianoKey",
+            "touchend .piano-key": "upPianoKey"
         },
 
         initialize: function() {
             var that = this;
-            that.keyboard = new KeyboardModel({onInit: function(){
+
+            that.keyboard = new KeyboardModel();
+
+            that.keyboard.on('change:loaded', function(){
                 _.each(that.keyboard.keys.models, function(pianoKey){
                     new KeyView(pianoKey); // link model to view
                 });
                 that.render();
-            }});
+            });
         },
 
         clickOnPianoKey: function(e){
@@ -45,13 +48,12 @@ define([
                 _: _
             };
             var compiledTemplate = _.template(keyboardTemplate);
-            this.$el.find('.keyboard').replaceWith(compiledTemplate(data));
+            $('.keyboard').replaceWith(compiledTemplate(data));
 
             return this;
         },
 
-        onKeyDown: function($key)
-        {
+        onKeyDown: function($key) {
             if (!$key.hasClass("down")) // Make sure it's not already pressed
             {
                 $key.addClass("down");

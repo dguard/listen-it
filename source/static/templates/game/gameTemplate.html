@@ -59,26 +59,15 @@
 
     <% if (game.getLastMessage()) { %>
         <% if(game.getLastMessage().status === 'success') { %>
-            <div class="alert alert-success margin-top-10" role="alert">
-                <%= game.getLastMessage().text %>
-            </div>
+        <div class="alert alert-success margin-top-10" role="alert">
+            <%= game.getLastMessage().text %>
+        </div>
         <% } %>
         <% if(game.getLastMessage().status === 'error') { %>
-            <div class="alert alert-danger margin-top-10" role="alert">
-                <%= game.getLastMessage().text %>
-            </div>
+        <div class="alert alert-danger margin-top-10" role="alert">
+            <%= game.getLastMessage().text %>
+        </div>
         <% } %>
     <% } %>
 
-    <!--<ul class="help">-->
-        <!--<li>Очистить - <b>Backspace</b></li>-->
-        <!--<li>Отменить - <b>Стрелка влево</b></li>-->
-        <!--<li>Повторить - <b>Стрелка вправо</b></li>-->
-
-        <!--<li>Проверить - <b>Alt + Enter</b></li>-->
-
-        <!--<li>Повторить - <b>Enter</b></li>-->
-        <!--<li>Проиграть мелодию на клавиатуре - <b>Shift + Enter</b></li>-->
-        <!--<li>Прослушать мелодию - <b>Ctrl + Enter</b></li>-->
-    <!--</ul>-->
 </div>
