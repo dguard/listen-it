@@ -4,6 +4,7 @@ import config
 import midi_parser
 import helpers
 import uuid
+from flask import jsonify
 
 app = Flask(__name__, static_url_path='')
 
@@ -24,7 +25,7 @@ def upload():
         finally:
             helpers.delete_file(fullname)
         return resp
-    return 'Cannot save file'
+    return jsonify({'status': 'error', 'message': 'Cannot save file'})
 
 if __name__ == "__main__":
     import argparse

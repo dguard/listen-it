@@ -3,37 +3,47 @@ define([
     'underscore',
     'backbone',
     'text!templates/game/gameTemplate.html',
-    'models/game/GameModel',
     'views/game/KeyboardView',
     'models/sound/SoundModel',
     'text!templates/game/melodyTemplate.html',
     'models/sound/SoundPlayerModel',
     'models/tact/TactModel',
-    'text!templates/game/mainTemplate.html'
-], function($, _, Backbone, gameTemplate, GameModel, KeyboardView,
-            SoundModel, melodyTemplate, SoundPlayerModel, TactModel, mainTemplate
+    'text!templates/game/mainTemplate.html',
+    'models/storage/StorageModel',
+    'models/storage/ModelFactory'
+], function($, _, Backbone, gameTemplate, KeyboardView,
+            SoundModel, melodyTemplate, SoundPlayerModel, TactModel, mainTemplate, StorageModel, ModelFactory
     ){
 
     var GameView = Backbone.View.extend({
         el: $("#page"),
 
         initialize: function(options){
-            this.game = new GameModel();
+            if(!this.canStart()) {
+                debugger;
+                StorageModel.saveComponent('message', 'Выберите или загрузите midi-файл, чтобы приступить к игре');
+                Backbone.history.navigate('!upload', {'trigger': true});
+                return;
+            }
+            this.game = ModelFactory.loadGame();
             this.game.on('change', this.render, this);
+
             this.game.melody.on('change', this.render, this);
+            this.game.melody.on('change:loaded', this.renderMelody, this);
             this.game.melody.tacts.on('change', this.render, this);
 
-            var that = this;
 
             this.keyboardView = new KeyboardView();
 
-            this.game.melody.on('change:loaded', function(){
-                that.renderMelody();
-            });
             $(document).on('keydown', $.proxy(this.onPressKey, this));
 
             this.renderMain();
-            this.renderGame();
+            this.render();
+        },
+
+        canStart: function(){
+            var melody = StorageModel.get('melody');
+            return melody && melody.tacts;
         },
 
         gameTemplate: _.template(gameTemplate),
@@ -176,6 +186,8 @@ define([
             $('.melody').replaceWith(
                 this.melodyTemplate({ tacts: this.game.melody.tacts.models })
             );
+            var scrollWidth = $('.tacts-list li').length * $('.tacts-list li').outerWidth(true);
+            $('.tacts-list').width(scrollWidth);
         }
     });
 

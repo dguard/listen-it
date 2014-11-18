@@ -3,8 +3,9 @@ define([
     'backbone',
     'collections/tact/TactsCollection',
     'models/game/AudioManager',
-    'models/tact/TactModel'
-], function(_, Backbone, TactsCollection, AudioManager) {
+    'models/tact/TactModel',
+    'models/sound/SoundModel'
+], function(_, Backbone, TactsCollection, AudioManager, SoundModel) {
 
     var SoundPlayerModel = Backbone.Model.extend({
 
@@ -69,28 +70,40 @@ define([
             return $dfd;
         },
 
-        _playNote: function (sound, $dfd) {
-            var that = this;
-            var noteName = sound.get('note');
+        __playNote: function(noteName, speed, $dfd){
+            $dfd || ($dfd = $.Deferred());
 
             var $newDfd = $.Deferred();
+            speed || (speed = SoundModel.DEFAULT_SPEED);
             $newDfd.done(function (audio) {
-                audio.currentTime = 0;
-                audio.volume = 1.0;
+                audio.src = audio.src; // cannot set currentTime without reloading
 
-                setTimeout(function(){
-                    $dfd.resolve();
-                }, sound.getSpeed());
+                $(audio).bind('canplaythrough', function () {
+                    audio.currentTime = 0;
+                    audio.volume = 1.0;
 
-                audio.play();
+                    setTimeout(function(){
+                        $(audio).unbind('canplaythrough');
+                        $dfd.resolve();
+                    }, speed);
+
+                    audio.play();
+                });
             });
 
-            that.audioManager.getAudio(noteName, function(){}, $newDfd);
+            this.audioManager.getAudio(noteName, function(){}, $newDfd);
             return $dfd;
+        },
+
+        _playNote: function (sound, $dfd) {
+            var noteName = sound.get('note');
+            var speed = sound.getSpeed();
+
+            return this.__playNote(noteName, speed, $dfd);
         }
 
     });
 
-    return SoundPlayerModel;
+    return new SoundPlayerModel();
 
 });

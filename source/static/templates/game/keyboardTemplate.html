@@ -1,8 +1,10 @@
 <div class="keyboard">
     <div class="backboard"></div>
-    <div class="keys">
-        <% _.each(keys, function(key){ %>
+    <div class="keys-wrapper">
+        <div class="keys">
+            <% _.each(keys, function(key){ %>
             <%= key.view.render() %>
-        <% }); %>
+            <% }); %>
+        </div>
     </div>
 </div>

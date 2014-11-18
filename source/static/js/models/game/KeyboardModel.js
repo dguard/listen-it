@@ -3,7 +3,8 @@ define([
     'backbone',
     'models/game/AudioManager',
     'collections/game/KeysCollection',
-], function(_, Backbone, AudioManager, KeysCollection) {
+    'models/sound/SoundPlayerModel'
+], function(_, Backbone, AudioManager, KeysCollection, SoundPlayerModel) {
 
     var KeyboardModel = Backbone.Model.extend({
 
@@ -15,6 +16,7 @@ define([
             options || (options = {});
 
             this.audioManager = AudioManager;
+            this.soundPlayer = SoundPlayerModel;
             this.sustain = options.sustain || true;
             this.volume = options.volume || 1.0;
 

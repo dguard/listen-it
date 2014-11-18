@@ -26,7 +26,7 @@ class note:
 
     def get_note_name(self):
         chord = ['C', 'C#','D','D#','E','F','F#','G','G#','A','A#', 'B']
-        return chord[self.note % 12] + str(int(self.note/12)-2)
+        return str(int(self.note/12)-2) + chord[self.note % 12]
 
 class track:
     def __init__(self, name, ppnq, last_time_in_tackt, tempo,size):
@@ -95,18 +95,18 @@ class track:
                 continue
             tackts = []
             tackt_fin = self.time_in_tackt
-            tackt = []
+            tackt = {'sounds': []}
             for note in self.channels[ch]["notes"]:
                 if(note.time_fin <= tackt_fin):
-                    tackt.append(small_note(note))
+                    tackt['sounds'].append(small_note(note))
                 else:
                     tackts.append(tackt)
-                    tackt = []
+                    tackt = {'sounds': []}
                     tackt_fin += self.time_in_tackt
-                    tackt.append(small_note(note))
+                    tackt['sounds'].append(small_note(note))
             tackts.append(tackt)
             if len(self.channels[ch]) != 0:
-                result[ch] = {"sounds" : tackts, "temp" : (60000000 / tempo), "beat" : size}
+                result[ch] = {"tacts" : tackts, "temp" : (60000000 / tempo), "beat" : size}
         return result
 
 class MyEncoder(json.JSONEncoder):
@@ -114,7 +114,7 @@ class MyEncoder(json.JSONEncoder):
         return o.__dict__
 
 def generate_json(source):
-    answer = {"status" : "success", "data" : {"source" : source, "tracks" : []}}
+    answer = {"status": "success", "data": {"source": source, "tracks": []}}
     try:
         mid = MidiFile(source)
         time_in_tackt = 1
@@ -126,8 +126,9 @@ def generate_json(source):
                 try:
                     t.handlers[message.type](message)
                 except Exception as e:
+                    pass
                     # print(e)
-                    answer["status"] = e
+                    # answer["status"] = e
             time_in_tackt = t.time_in_tackt
             tempo = t.tempo
             size = t.size

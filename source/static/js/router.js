@@ -31,7 +31,6 @@ define([
 
         app_router.on('route:playGame', function(){
             var gameView = new GameView();
-            gameView.render();
         });
 
         app_router.on('route:showResult', function(){

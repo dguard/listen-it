@@ -1,7 +1,11 @@
 <div class="melody">
-    <ul class="tacts-list">
-        <% _.each(tacts, function(tact, index){ %>
-            <li class="<%= tact.getStatus() %>"></li>
-        <% }); %>
-    </ul>
+    <div class="melody-tacts-wrapper">
+        <ul class="tacts-list">
+            <% _.each(tacts, function(tact, index){ %>
+            <li class="<%= tact.getStatus() %>">
+                <span class="num"><%= index+1 %></span>
+            </li>
+            <% }); %>
+        </ul>
+    </div>
 </div>

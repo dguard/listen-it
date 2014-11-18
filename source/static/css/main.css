@@ -6,15 +6,27 @@ body {
 
 .tacts-list {
     display: inline-block;
+    overflow: hidden;
 }
 
 .tacts-list li {
     width: 100px;
     height: 50px;
-    display: inline-block;
+    float: left;
     background: #ecf0f1;
     border: 2px solid transparent;
     border-radius: 3px;
+    margin: 0 5px 5px 0;
+    display: table;
+    text-align: center;
+}
+
+.tacts-list li .num {
+    display: table-cell;
+    font-size: 12px;
+    font-weight: bold;
+    vertical-align: middle;
+    color: #fff;
 }
 .tacts-list li.current {
     background: #f1c40f;
@@ -75,6 +87,11 @@ body {
 .melody {
     text-align: center;
     margin: 15px 0 0;
+}
+
+.melody-tacts-wrapper {
+    overflow: auto;
+    text-align: center;
 }
 
 .inline-block {
@@ -141,13 +158,20 @@ body {
     /*box-shadow: 3px 3px 4px 1px rgba(0, 0, 0, 0.9);*/
 }
 
+.keys-wrapper {
+    overflow: auto;
+    text-align: center;
+    padding-bottom: 10px;
+}
+
 .keys {
     display: inline-block;
+    overflow: hidden;
 }
 
 .keyboard .piano-key
 {
-    display: inline-block;
+    float: left;
     border-bottom-right-radius: 4px;
     border-bottom-left-radius: 4px;
     cursor: pointer;
@@ -223,4 +247,8 @@ body {
 .controls input[type=range]
 {
     width: 10em;
+}
+
+#page {
+    margin-top: 20px;
 }

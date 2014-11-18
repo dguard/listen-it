@@ -1,10 +1,9 @@
 define([
     'underscore',
     'backbone',
-    'collections/tact/TactsCollection',
     'models/tact/TactModel',
     'models/sound/SoundPlayerModel'
-], function(_, Backbone, TactsCollection, TactModel, SoundPlayerModel) {
+], function(_, Backbone, TactModel, SoundPlayerModel) {
 
     var MelodyModel = Backbone.Model.extend({
 
@@ -15,18 +14,8 @@ define([
         
         initialize: function(options){
             options || (options = {});
-            this.soundPlayer = new SoundPlayerModel();
-            var that = this;
-            this.$whenInited = $.Deferred();
-            this.$whenInited.promise();
-
-            this.tacts = new TactsCollection;
-            this.tacts.fetch({
-                success: function () {
-                    that.tacts.at(0).set('status', TactModel.STATUS_CURRENT);
-                    that.$whenInited.resolve();
-                }
-            });
+            this.soundPlayer = SoundPlayerModel;
+            this.tacts = options.tacts;
         },
 
         getCurrentTact: function(){

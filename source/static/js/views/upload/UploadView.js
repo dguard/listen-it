@@ -2,8 +2,9 @@ define([
     'jquery',
     'underscore',
     'backbone',
-    'text!templates/upload/uploadTemplate.html'
-], function($, _, Backbone, uploadTemplate){
+    'text!templates/upload/uploadTemplate.html',
+    'models/storage/StorageModel'
+], function($, _, Backbone, uploadTemplate, StorageModel){
 
     var UploadView = Backbone.View.extend({
         el: $("#page"),
@@ -18,7 +19,8 @@ define([
                 type: 'POST',
                 url: '/upload',
                 data: form_data,
-                contentType: 'application/json',
+                dataType: 'json',
+                contentType: false,
                 cache: false,
                 processData: false,
                 success: this.onSuccessUpload,
@@ -27,16 +29,27 @@ define([
         },
 
         onSuccessUpload: function(data){
-            Backbone.history.navigate('!game', {'trigger': true});
+            if(data.status == 'success') {
+                StorageModel.saveComponent('melody', {
+                    tacts: data.data['tracks'][0]['channels'][0]['tacts']
+                });
+                Backbone.history.navigate('!game', {'trigger': true});
+            } else {
+                // TODO обернуть в красивый вид
+                alert('Ошибка при парсинге файла!');
+            }
         },
 
         onError: function(data){
-            alert('Ошибка!')
+            // TODO обернуть в красивый вид
+            alert('Ошибка при получении данных!')
         },
 
         render: function(){
-
-            this.$el.html(uploadTemplate);
+            this.$el.html(
+                _.template(uploadTemplate)({'message': StorageModel.getComponent('message')})
+            );
+            StorageModel.set('message', '')
         }
     });
 

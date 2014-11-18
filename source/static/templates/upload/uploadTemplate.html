@@ -1,6 +1,15 @@
+<h1 class="text-center">Шаг 1. Выбор файла</h1>
+
+<% if(message) { %>
+    <div class="alert alert-danger"><%= message %></div>
+<% } %>
+
 <div class="row">
     <div class="col-md-6">
         <h2>Выберите один из MIDI файлов</h2>
+        <p>
+            К сожалению, пока нет файлов для загрузки
+        </p>
     </div>
     <div class="col-md-6">
         <h2>Или загрузите свой файл</h2>

@@ -12,8 +12,11 @@ define([
 
         getSpeed: function(){
             var parts = this.duration.split('/');
-            return parts[0] / parts[1] * 7 * 100 * 2;
+            return parts[0] / parts[1] * SoundModel.DEFAULT_DURATION;
         }
+    }, {
+        DEFAULT_DURATION: 7 * 2 * 100,
+        DEFAULT_SPEED: 100
     });
 
     return SoundModel;

@@ -50,6 +50,9 @@ define([
             var compiledTemplate = _.template(keyboardTemplate);
             $('.keyboard').replaceWith(compiledTemplate(data));
 
+            var scrollWidth = $('.piano-key.white').length * $('.piano-key.white').outerWidth(true);
+            $('.keys').width(scrollWidth);
+
             return this;
         },
 
@@ -62,15 +65,7 @@ define([
         },
 
         playNote: function(noteName){
-            var that = this;
-
-            var $dfd = $.Deferred();
-            $dfd.done(function(audio){
-                audio.currentTime = 0;
-                audio.volume = that.keyboard.volume;
-                audio.play();
-            });
-            this.keyboard.audioManager.getAudio(noteName, function(){}, $dfd);
+            this.keyboard.soundPlayer.__playNote(noteName);
         },
 
         onKeyUp: function($key) {
