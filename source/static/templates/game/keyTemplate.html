@@ -1,5 +1,5 @@
 <div data-note="<%= key.get('note') %>"
-     class="piano-key <%= key.isWhite() ? 'white' : 'black' %>"
+     class="piano-key <%= key.isWhite() ? 'white' : 'black' %> <%= key.isPressed() ? 'down' : '' %>"
      title="<%= key.get('note') %>"
         >
     <% _.each(key.get('marks'), function(mark) { %>

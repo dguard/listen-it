@@ -13,15 +13,17 @@ define([
         events: {
             "mousedown .piano-key": "onClickPianoKey",
             "mouseup .piano-key": "onEndClickPianoKey",
-            "mouseleave .piano-key": "upPianoKey",
+            "mouseleave .piano-key": "onEndClickPianoKey",
 
             "touchstart .piano-key": "onClickPianoKey",
             "touchend .piano-key": "onEndClickPianoKey"
         },
 
-        initialize: function() {
+        initialize: function(options) {
             var that = this;
 
+            // TODO refactor it
+            that.game = options.game;
             that.keyboard = new KeyboardModel();
 
             that.keyboard.on('change:loaded', function(){
@@ -49,25 +51,29 @@ define([
         },
 
         onClickPianoKey: function(e) {
-            var $key = $(e.currentTarget);
-            this.pressPianoKey($key);
+            var note = $(e.currentTarget).data('note');
+            var key = this.findKeyByNote(note);
+
+            this.pressPianoKey(key);
         },
 
         onEndClickPianoKey: function(e) {
-            var $key = $(e.currentTarget);
-            this.releasePianoKey($key);
+            var note = $(e.currentTarget).data('note');
+            var key = this.findKeyByNote(note);
+
+            this.releasePianoKey(key);
         },
 
-        pressPianoKey: function($key){
-            if ($key && !$key.hasClass("down")) // Make sure it's not already pressed
-            {
-                $key.addClass("down");
-                this.playNote($key.data("note"));
+        pressPianoKey: function(key){
+            if(key && !key.get('is_pressed')) {
+                key.set('is_pressed', true);
+                this.playNote(key.note);
+                this.game.selectPianoKey(key);
             }
         },
 
-        releasePianoKey: function($key){
-            $key && $key.removeClass("down");
+        releasePianoKey: function(key){
+            key && key.set('is_pressed', false);
         },
 
         playNote: function(noteName){
@@ -79,26 +85,21 @@ define([
                 this.keyboard.changeOctave(e);
                 return;
             }
-            var note = this.keyboard.detectNoteByKey(e);
-            var $key = this.findKeyByNote(note);
-            $key && this.pressPianoKey($key);
+            var note = this.keyboard.detectNoteByPressedKey(e);
+            var key = this.findKeyByNote(note);
+            key && this.pressPianoKey(key);
         },
         onKeyUp: function(e){
             if(this.keyboard.isChangingOctave(e)) {
                 return;
             }
-            var note = this.keyboard.detectNoteByKey(e);
-            var $key = this.findKeyByNote(note);
-            $key && this.releasePianoKey($key);
+            var note = this.keyboard.detectNoteByPressedKey(e);
+            var key = this.findKeyByNote(note);
+            key && this.releasePianoKey(key);
         },
         findKeyByNote: function(note){
             if(!note) return null;
-
-            var key = this.keyboard.keys.findWhere({note: note});
-            if(key) {
-                return $('[data-note=' + key.note + ']');
-            }
-            return null;
+            return this.keyboard.keys.findWhere({note: note});
         }
     });
 

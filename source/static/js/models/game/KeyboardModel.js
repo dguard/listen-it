@@ -45,7 +45,7 @@ define([
             });
         },
 
-        detectNoteByKey: function(e){
+        detectNoteByPressedKey: function(e){
             // TODO move to json file
             var notes = {
                 "83": {"note": "C#", "offset": 0},

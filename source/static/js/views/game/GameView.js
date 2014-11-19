@@ -31,9 +31,7 @@ define([
             this.game.melody.on('change:loaded', this.renderMelody, this);
             this.game.melody.tacts.on('change', this.render, this);
 
-
-            this.keyboardView = new KeyboardView();
-
+            this.keyboardView = new KeyboardView({game: this});
             $(document).on('keydown', $.proxy(this.onPressKey, this));
 
             this.renderMain();
@@ -63,8 +61,7 @@ define([
             "click .game__repeat-key": 'onClickRepeatKey',
 
             "click .game__repeat-tact": "onClickRepeatTact",
-            "click .game__melody": "onClickMelody",
-            "click .piano-key": "onSelectPianoKey"
+            "click .game__melody": "onClickMelody"
         },
 
 
@@ -111,7 +108,11 @@ define([
         onPressKey: function(e){
             switch(e.keyCode) {
                 case 46: // delete
-                    this.onClickClearKey(e);
+                    if(e.shiftKey) {
+                        this.game.set('select_piano_keys', !this.game.get('select_piano_keys'))
+                    } else {
+                        this.onClickClearKey(e);
+                    }
                     break;
                 case 37: // left
                     this.onClickUndoKey(e);
@@ -141,11 +142,11 @@ define([
             }
             e.preventDefault(); // prevent the default action (scroll / move caret)
         },
-        onSelectPianoKey: function(e){
-            var note = $(e.currentTarget).data('note');
-            var key = this.keyboardView.keyboard.keys.where({note: note})[0];
-            if(this.game.canAddMark()) {
-                this.game.addMark(key);
+        selectPianoKey: function(key){
+            if(this.game.get('select_piano_keys')) {
+                if(this.game.canAddMark()) {
+                    this.game.addMark(key);
+                }
             }
         },
         onClickClearKey: function(e){
@@ -185,7 +186,8 @@ define([
             $('.melody').replaceWith(
                 this.melodyTemplate({ tacts: this.game.melody.tacts.models })
             );
-            var scrollWidth = $('.tacts-list li').length * $('.tacts-list li').outerWidth(true);
+            var $bruceLee = $('.tacts-list li');
+            var scrollWidth = $bruceLee.length * $bruceLee.outerWidth(true);
             $('.tacts-list').width(scrollWidth);
         }
     });

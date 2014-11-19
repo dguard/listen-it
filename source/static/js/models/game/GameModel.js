@@ -9,7 +9,8 @@ define([
     defaults: {
         marks: [],
         history_marks: [],
-        messages: []
+        messages: [],
+        select_piano_keys: true
     },
 
     initialize: function(options) {

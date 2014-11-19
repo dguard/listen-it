@@ -6,7 +6,8 @@ define([
     var KeyModel = Backbone.Model.extend({
 
         defaults: {
-            random: 0
+            random: 0,
+            is_pressed: false
         },
 
         initialize: function(options) {
@@ -16,6 +17,10 @@ define([
 
         isWhite: function() {
             return this.note.indexOf("#") === -1;
+        },
+
+        isPressed: function(){
+            return this.get('is_pressed');
         },
 
         doRender: function(){
