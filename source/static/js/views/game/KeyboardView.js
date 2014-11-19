@@ -11,12 +11,12 @@ define([
         el: $("#page"),
 
         events: {
-            "mousedown .piano-key": "clickOnPianoKey",
-            "mouseup .piano-key": "upPianoKey",
+            "mousedown .piano-key": "onClickPianoKey",
+            "mouseup .piano-key": "onEndClickPianoKey",
             "mouseleave .piano-key": "upPianoKey",
 
-            "touchstart .piano-key": "clickOnPianoKey",
-            "touchend .piano-key": "upPianoKey"
+            "touchstart .piano-key": "onClickPianoKey",
+            "touchend .piano-key": "onEndClickPianoKey"
         },
 
         initialize: function() {
@@ -30,16 +30,8 @@ define([
                 });
                 that.render();
             });
-        },
-
-        clickOnPianoKey: function(e){
-            this.onKeyDown($(e.currentTarget));
-            return false;
-        },
-
-        upPianoKey: function(e){
-            this.onKeyUp($(e.currentTarget));
-            return false;
+            $(document).on('keydown', $.proxy(this.onKeyDown, this));
+            $(document).on('keyup', $.proxy(this.onKeyUp, this));
         },
 
         render: function(){
@@ -56,20 +48,57 @@ define([
             return this;
         },
 
-        onKeyDown: function($key) {
-            if (!$key.hasClass("down")) // Make sure it's not already pressed
+        onClickPianoKey: function(e) {
+            var $key = $(e.currentTarget);
+            this.pressPianoKey($key);
+        },
+
+        onEndClickPianoKey: function(e) {
+            var $key = $(e.currentTarget);
+            this.releasePianoKey($key);
+        },
+
+        pressPianoKey: function($key){
+            if ($key && !$key.hasClass("down")) // Make sure it's not already pressed
             {
                 $key.addClass("down");
                 this.playNote($key.data("note"));
             }
         },
 
+        releasePianoKey: function($key){
+            $key && $key.removeClass("down");
+        },
+
         playNote: function(noteName){
             this.keyboard.soundPlayer.__playNote(noteName);
         },
 
-        onKeyUp: function($key) {
-            $key.removeClass("down");
+        onKeyDown: function(e){
+            if(this.keyboard.isChangingOctave(e)) {
+                this.keyboard.changeOctave(e);
+                return;
+            }
+            var note = this.keyboard.detectNoteByKey(e);
+            var $key = this.findKeyByNote(note);
+            $key && this.pressPianoKey($key);
+        },
+        onKeyUp: function(e){
+            if(this.keyboard.isChangingOctave(e)) {
+                return;
+            }
+            var note = this.keyboard.detectNoteByKey(e);
+            var $key = this.findKeyByNote(note);
+            $key && this.releasePianoKey($key);
+        },
+        findKeyByNote: function(note){
+            if(!note) return null;
+
+            var key = this.keyboard.keys.findWhere({note: note});
+            if(key) {
+                return $('[data-note=' + key.note + ']');
+            }
+            return null;
         }
     });
 

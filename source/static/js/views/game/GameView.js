@@ -20,7 +20,6 @@ define([
 
         initialize: function(options){
             if(!this.canStart()) {
-                debugger;
                 StorageModel.saveComponent('message', 'Выберите или загрузите midi-файл, чтобы приступить к игре');
                 Backbone.history.navigate('!upload', {'trigger': true});
                 return;

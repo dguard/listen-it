@@ -18,8 +18,8 @@ class note:
         self.end = False
         self.music_size =0
 
-    def count_music_size(self, time_in_tackt):
-        self.music_size = Fraction((self.time_fin - self.time_st), int(time_in_tackt))
+    def count_music_size(self, time_in_tact):
+        self.music_size = Fraction((self.time_fin - self.time_st), int(time_in_tact))
 
     def __repr__(self):
         return "{note " + str(self.note) + ", time_st " + str(self.time_st) + ", time_fin "+ str(self.time_fin) + ", music_size " + str(self.music_size) + "}"
@@ -29,13 +29,13 @@ class note:
         return str(int(self.note/12)-2) + chord[self.note % 12]
 
 class track:
-    def __init__(self, name, ppnq, last_time_in_tackt, tempo,size):
+    def __init__(self, name, ppnq, last_time_in_tact, tempo,size):
         self.name = name
         self.track_name = ""
         self.channels = {}
         self.ppnq = ppnq
         self.tmp_time = 0
-        self.time_in_tackt = last_time_in_tackt
+        self.time_in_tact = last_time_in_tact
         self.tempo = tempo
         self.size = size
         self.handlers = {"set_tempo" : self.set_tempo,
@@ -58,7 +58,7 @@ class track:
     def time_signature(self, msg):
         self.numerator = msg.numerator
         self.denominator = msg.numerator
-        self.time_in_tackt = self.ppnq * 4 * self.numerator / self.denominator
+        self.time_in_tact = self.ppnq * 4 * self.numerator / self.denominator
         self.size = str(msg.numerator) + "/" + str(msg.denominator)
 
     def track_name(self, msg):
@@ -85,28 +85,28 @@ class track:
                     note.time_fin = self.tmp_time
                     note.velocity_fin = msg.velocity
                     note.end = True
-                    note.count_music_size(self.time_in_tackt)
+                    note.count_music_size(self.time_in_tact)
                     break
 
-    def get_tackts(self, tackts, tempo, size):
+    def get_tacts(self, tacts, tempo, size):
         result = {}
         for ch in self.channels:
             if not "notes" in self.channels[ch]:
                 continue
-            tackts = []
-            tackt_fin = self.time_in_tackt
-            tackt = {'sounds': []}
+            tacts = []
+            tact_fin = self.time_in_tact
+            tact = {'sounds': []}
             for note in self.channels[ch]["notes"]:
-                if(note.time_fin <= tackt_fin):
-                    tackt['sounds'].append(small_note(note))
+                if(note.time_fin <= tact_fin):
+                    tact['sounds'].append(small_note(note))
                 else:
-                    tackts.append(tackt)
-                    tackt = {'sounds': []}
-                    tackt_fin += self.time_in_tackt
-                    tackt['sounds'].append(small_note(note))
-            tackts.append(tackt)
+                    tacts.append(tact)
+                    tact = {'sounds': []}
+                    tact_fin += self.time_in_tact
+                    tact['sounds'].append(small_note(note))
+            tacts.append(tact)
             if len(self.channels[ch]) != 0:
-                result[ch] = {"tacts" : tackts, "temp" : (60000000 / tempo), "beat" : size}
+                result[ch] = {"tacts" : tacts, "temp" : (60000000 / tempo), "beat" : size}
         return result
 
 class MyEncoder(json.JSONEncoder):
@@ -117,11 +117,11 @@ def generate_json(source):
     answer = {"status": "success", "data": {"source": source, "tracks": []}}
     try:
         mid = MidiFile(source)
-        time_in_tackt = 1
+        time_in_tact = 1
         tempo = 120 * 60000000
         size = ""
         for i, tr in enumerate(mid.tracks):
-            t = track(source, mid.ticks_per_beat, time_in_tackt, tempo, size)
+            t = track(source, mid.ticks_per_beat, time_in_tact, tempo, size)
             for message in tr:
                 try:
                     t.handlers[message.type](message)
@@ -129,10 +129,10 @@ def generate_json(source):
                     pass
                     # print(e)
                     # answer["status"] = e
-            time_in_tackt = t.time_in_tackt
+            time_in_tact = t.time_in_tact
             tempo = t.tempo
             size = t.size
-            js_track = {"channels" : t.get_tackts(t.time_in_tackt, t.tempo, t.size)}
+            js_track = {"channels" : t.get_tacts(t.time_in_tact, t.tempo, t.size)}
             if t.track_name != "":
                 js_track["track_name"] = t.track_name
             if len(js_track["channels"]) > 0:
