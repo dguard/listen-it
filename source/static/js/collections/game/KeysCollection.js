@@ -8,7 +8,7 @@ define([
         model: KeyModel,
 
         url : function() {
-            return 'json/keysCollection_3.json';
+            return 'json/keysCollection_6.json';
         },
 
         parse : function(data) {

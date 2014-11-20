@@ -24,19 +24,31 @@ define([
                 cache: false,
                 processData: false,
                 success: this.onSuccessUpload,
-                error: this.onError
+                error: this.onError,
+                context: this
             });
         },
 
         onSuccessUpload: function(data){
             if(data.status == 'success') {
+                var track = this.getFirstAttr(data.data['tracks']);
+                var channel = this.getFirstAttr(track['channels']);
+
                 StorageModel.saveComponent('melody', {
-                    tacts: data.data['tracks'][0]['channels'][0]['tacts']
+                    tacts: channel['tacts']
                 });
                 Backbone.history.navigate('!game', {'trigger': true});
             } else {
                 // TODO обернуть в красивый вид
                 alert('Ошибка при парсинге файла!');
+            }
+        },
+
+        getFirstAttr: function(obj){
+            for (var i in obj) {
+                if (obj.hasOwnProperty(i) && typeof(i) !== 'function') {
+                    return obj[i];
+                }
             }
         },
 
