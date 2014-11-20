@@ -17,12 +17,17 @@ define([
 
         loadMelody: function(){
             var melody = StorageModel.getComponent('melody');
-            var tacts = new TactsCollection(melody.tacts);
-            tacts.at(0).set('status', TactModel.STATUS_CURRENT);
 
-            return new MelodyModel({
-                tacts: tacts
-            });
+            if(melody && melody.trackId != -1 && melody.channelId != -1 && melody.tracks) {
+                var tacts = melody.tracks[melody.trackId]['channels'][melody.channelId]['tacts'];
+                tacts = new TactsCollection(tacts);
+                tacts.at(0).set('status', TactModel.STATUS_CURRENT);
+
+                return new MelodyModel({
+                    tacts: tacts
+                });
+            }
+            return null;
         }
     });
 

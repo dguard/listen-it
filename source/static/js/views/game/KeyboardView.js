@@ -46,6 +46,7 @@ define([
 
             var scrollWidth = $('.piano-key.white').length * $('.piano-key.white').outerWidth(true);
             $('.keys').width(scrollWidth);
+            $('.ajax-loader').addClass('hide');
 
             return this;
         },

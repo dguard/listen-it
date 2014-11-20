@@ -21,7 +21,7 @@ def upload():
         fullname = os.path.join(config.UPLOAD_FOLDER, new_filename)
         try:
             helpers.save_file(file, new_filename)
-            resp = midi_parser.get_json_for_file(fullname)
+            resp = midi_parser.get_json_for_file(fullname, file.filename)
         finally:
             helpers.delete_file(fullname)
         return resp

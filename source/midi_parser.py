@@ -113,8 +113,8 @@ class MyEncoder(json.JSONEncoder):
     def default(self, o):
         return o.__dict__
 
-def generate_json(source):
-    answer = {"status": "success", "data": {"source": source, "tracks": []}}
+def generate_json(source, initial_name):
+    answer = {"status": "success", "data": {"source": initial_name, "tracks": []}}
     try:
         mid = MidiFile(source)
         time_in_tact = 1
@@ -132,7 +132,7 @@ def generate_json(source):
             time_in_tact = t.time_in_tact
             tempo = t.tempo
             size = t.size
-            js_track = {"channels" : t.get_tacts(t.time_in_tact, t.tempo, t.size)}
+            js_track = {"channels": t.get_tacts(t.time_in_tact, t.tempo, t.size)}
             if t.track_name != "":
                 js_track["track_name"] = t.track_name
             if len(js_track["channels"]) > 0:
@@ -142,5 +142,5 @@ def generate_json(source):
     return answer
 
 
-def get_json_for_file(filename):
-    return json.dumps(generate_json(filename), cls=MyEncoder, indent=4)
+def get_json_for_file(filename, initial_name):
+    return json.dumps(generate_json(filename, initial_name), cls=MyEncoder, indent=4)

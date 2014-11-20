@@ -6,13 +6,7 @@
 
 <div class="row">
     <div class="col-md-6">
-        <h2>Выберите один из MIDI файлов</h2>
-        <p>
-            К сожалению, пока нет файлов для загрузки
-        </p>
-    </div>
-    <div class="col-md-6">
-        <h2>Или загрузите свой файл</h2>
+        <h2>1.1. Загрузите свой файл</h2>
         <form id="upload-file" method="post" enctype="multipart/form-data">
             <fieldset>
                 <input id="file" name="file" type="file" style="margin-bottom: 20px">
@@ -22,4 +16,34 @@
             </fieldset>
         </form>
     </div>
+    <div class="col-md-6">
+        <div class="ajax-loader hide">
+            <img src="images/loader.gif" title="Загружаю...">
+        </div>
+        <div class="melody-tracks">
+            <% if(tracks.length) { %>
+                <h2>1.2. Выбор трека и канала</h2>
+                <h3 class="source__name">Файл <span class="label label-info"><%= source %></span></h3>
+                <div class="alert alert-success" role="alert">
+                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                    <b>Подсказка</b>: для продолжения нажмите на название любого канала
+                </div>
+                <div class="track-list">
+                    <% _.each(tracks, function(track, track_key){ %>
+                    <div class="track" data-track_id="<%= track_key %>">
+                        <% var track_name = track.track_name != undefined ? track.track_name : track_key; %>
+                        <div class="track__name" title="Нет информации о треке">Трек "<%= track_name %>"</div>
+                        <div class="channel-list">
+                            <% _.each(track.channels, function(channel, key){ %>
+                            <a class="channel-list__channel" data-channel_id="<%= key %>"  href="#" title="Перейти к проигрыванию дорожки">
+                                <span class="glyphicon glyphicon-play"></span> Канал "<%= key %>"
+                            </a>
+                            <% }); %>
+                        </div>
+                    </div>
+                    <% }); %>
+                </div>
+                <% } %>
+            </div>
+        </div>
 </div>

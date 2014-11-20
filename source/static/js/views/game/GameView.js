@@ -39,8 +39,7 @@ define([
         },
 
         canStart: function(){
-            var melody = StorageModel.get('melody');
-            return melody && melody.tacts;
+            return StorageModel.get('melody');
         },
 
         gameTemplate: _.template(gameTemplate),

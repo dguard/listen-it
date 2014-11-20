@@ -9,11 +9,11 @@ define([
 
         initialize: function(){
             this.load();
-            this.on('change', this.save);
         },
 
         saveComponent: function(name, objValue){
             this.set(name, objValue);
+            this.save();
         },
 
         save: function(){
