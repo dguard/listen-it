@@ -9,6 +9,7 @@ define([
 
         initialize: function(){
             this.load();
+            this.version = 'v0.11';
         },
 
         saveComponent: function(name, objValue){
@@ -18,7 +19,7 @@ define([
 
         save: function(){
             var app = {
-                version: 'v0.1',
+                version: this.version,
                 data: this.attributes
             };
             $.localStorage.set("app", JSON.stringify(app));
@@ -26,11 +27,10 @@ define([
 
         load: function(){
             var app = $.localStorage.get("app");
-            if(app) {
+            if(app && app.version === this.version) {
                 _.each(app.data, function(value, key){
                     this.set(key, value);
                 }, this);
-                this.version = app.version;
             }
         },
 
