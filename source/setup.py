@@ -5,7 +5,7 @@ import midi_parser
 import helpers
 import uuid
 from flask import jsonify
-
+import cmd
 app = Flask(__name__, static_url_path='')
 
 

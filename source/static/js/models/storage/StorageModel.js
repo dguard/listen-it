@@ -8,8 +8,8 @@ define([
     var StorageModel = Backbone.Model.extend({
 
         initialize: function(){
-            this.load();
             this.version = 'v0.11';
+            this.load();
         },
 
         saveComponent: function(name, objValue){
@@ -27,7 +27,7 @@ define([
 
         load: function(){
             var app = $.localStorage.get("app");
-            if(app && app.version === this.version) {
+            if(app && app.version == this.version) {
                 _.each(app.data, function(value, key){
                     this.set(key, value);
                 }, this);
